@@ -8,10 +8,11 @@ def trapezio(funcao, a, b, numeroPontos):
 	somaFirstLast = funcao(a) + funcao(b);
 	somaMeio = 0;
 
-	for i in range(1, numeroPontos-1):
+	for i in range(numeroPontos):
 		ponto = a + i*h;
-		somaMeio += funcao(ponto);
-		#print(i, ponto);
+		if(i>0 and i<numeroPontos-1):
+			somaMeio += funcao(ponto);
+		#print(i, ponto, funcao(ponto));
 
 	return (somaFirstLast + 2*somaMeio)*(h/2);
 
@@ -51,6 +52,9 @@ def simpson38(funcao, a, b, numeroPontos):
 	return (somaFirstLast + 2*somaiMult3 + 3*somai)*(3*h/8);
 
 
-print(trapezio(f, -5, 5, 37));
-print(simpson13(f, -5, 5, 37));
-print(simpson38(f, -5, 5, 37));
+for i in range(1, 7):
+	qtd_pontos = 6*i+1;
+	print("%d pontos" %qtd_pontos );
+	print("\t trapezio: ", trapezio(f, -5, 5, qtd_pontos));
+	print("\t simpson 1/3: ", simpson13(f, -5, 5, qtd_pontos));
+	print("\t simpson 3/8: ", simpson38(f, -5, 5, qtd_pontos));
