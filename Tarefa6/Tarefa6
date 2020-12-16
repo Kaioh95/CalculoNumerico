@@ -1,0 +1,114 @@
+\documentclass[a4paper, 12pt]{article}
+\usepackage[utf8]{inputenc}
+
+\title{Tarefa 6}
+\author{Kaio Henrique de Sousa}
+\date{\today}
+
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{amsmath}
+\usepackage{appendix}
+\usepackage[english, brazil]{babel}
+\graphicspath{{images/}}
+
+%%%----------%%%----------%%%----------%%%----------%%%
+
+
+\begin{document}
+
+\maketitle
+
+\section*{Questão 1}
+
+\subsection*{a.}
+Calculados o valores utilizados na regressão linear, temos:
+\begin{align*}
+    &n = 1000; \qquad \sum_{i=1}^{n} x_i = 1747,3750539288005;\\
+    &\sum_{i=1}^{n} x_i^2 = 3063,443559841964; \qquad \sum_{i=1}^{n} y_i = 62833,24230949759;\\
+    &\sum_{i=1}^{n} x_iy_i = 110505,29703554006.\\
+\end{align*}
+
+Resolvendo o seguinte sistema
+
+\[ \left[
+\medskip
+\begin{array}{cc|c}
+1000 & 1747,3751 & 62833.2423\\
+1747,3751 & 3063,4436 & 110505.2970
+\end{array}
+\right] \]
+
+temos $a_0 = -60.0661$ e $a_1 = 70.3337$, logo a função que procuramos é $$f(x) = -60.0661 + 70.3337\cdot x$$.
+
+\subsection*{b.}
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=1\textwidth]{pesos.eps}
+    \caption{Função estimada para os pontos dados.}
+    \label{fig:fig1}
+\end{figure}
+
+\newpage
+
+\subsection*{c.}
+
+Para estimar o peso de uma pessoa com altura 2m10cm, basta substituir o valor na função f encontrada, temos que $f(2.10) = 87,6347$ é o peso estimado de uma pessoa com 2m10cm de altura.
+
+\section*{Questão 2}
+
+\subsection*{a.}
+Calculados o valores utilizados na regressão polinomial para um polinômio de segundo grau $P_2(x) = a_0 + a_1x + a_2x^2$, temos:
+\begin{align*}
+    &m = 40; \qquad \sum_{i=1}^{m} x_i = 367,6884;\\
+    &\sum_{i=1}^{m} x_i^2 = 3388,2590; \qquad \sum_{i=1}^{m} x_i^3 = 31299,9556; \qquad \sum_{i=1}^{m} x_i^4 = 289849,1630; \\
+    &\sum_{i=1}^{m} y_i = 233,0951; \qquad
+    \sum_{i=1}^{m} y_ix_i = 2102,5650; \qquad \sum_{i=1}^{m} y_ix_i^2 = 19012,4989\\
+\end{align*}
+
+Resolvendo o seguinte sistema
+
+\[ \left[
+\medskip
+\begin{array}{ccc|c}
+40 & 367,6884 & 3388,2590 & 233,0951\\
+367,6884 & 3388,2590 & 31299,9556 & 2102,5650\\
+3388,2590 & 31299,9556 & 289849,1630 & 19012,4989
+\end{array}
+\right] \]
+
+temos $a_0 = 376,0256$, $a_1 = -75,8851$ e $a_2 = 3.8646$, logo o polinômio que procuramos é $$P_2(x) = 376.0255756310777 - 75.88511802780468\cdot x + 3.8645661987598308\cdot x^2$$.
+
+\subsection*{b.}
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=1\textwidth]{barco.eps}
+    \caption{Função que estima o tempo que o barco leva para ir e voltar o rio a uma dada velocidade.}
+    \label{fig:fig2}
+\end{figure}
+
+\newpage
+
+\subsection*{c.}
+
+Para estimar o tempo que o barco leva para um barco ir e voltar o rio com velocidade de \textit{11km/h}, basta substituir o valor no polinômio encontrado, temos que $P_2(11) = 8,901787375$ é o tempo que leva com o barco a \textit{11km/h}.
+
+\subsection*{d.}
+Faremos os cálculos com base nos valores estimados do item acima, ou seja, velocidade de $v_b = $\textit{11km/h} e tempo de percurso igual a $8,901787375$. Foi dada a velocidade da corrente do rio $v_c = 8$ e pela descrição do problema, sabemos que $$\int_{0}^{x}11-8dt + \int_{x}^{8,901787375}11+8dt$$ é duas vezes o comprimento do rio e pelo mesmo motivo sabemos que as integrais possuem mesmo valor. Assim, calculamos:
+
+\begin{align*}
+    & \int_{0}^{x}11-8dt = \int_{x}^{8,901787375}11+8dt\\
+    \implies & 3x = 169,133960128 - 19x\\
+    \implies & x = 7,687907279.\\
+\end{align*}
+
+Agora basta calcular $$\int_{0}^{7,687907279}11-8dt \quad \text{ou} \quad \int_{7,687907279}^{8,901787375}11+8dt$$
+para descobrir o comprimento do rio que é de $23,0637$.
+
+
+\end{document}
+
+
+

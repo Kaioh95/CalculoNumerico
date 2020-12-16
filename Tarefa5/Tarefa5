@@ -1,0 +1,149 @@
+\documentclass[a4paper, 12pt]{article}
+\usepackage[utf8]{inputenc}
+
+\title{Tarefa 5}
+\author{Kaio Henrique de Sousa}
+\date{\today}
+
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{amsmath}
+\usepackage{appendix}
+\usepackage{multirow}
+\usepackage[english, brazil]{babel}
+\usepackage{listings}
+\graphicspath{{images/}}
+
+\lstset{
+    language=Python,
+    basicstyle=\ttfamily\small,
+    aboveskip={1.0\baselineskip},
+    belowskip={1.0\baselineskip},
+    columns=fixed,
+    extendedchars=true,
+    breaklines=true,
+    tabsize=4,
+    prebreak=\raisebox{0ex}[0ex][0ex]{\ensuremath{\hookleftarrow}},
+    frame=lines,
+    showtabs=false,
+    showspaces=false,
+    showstringspaces=false,
+    keywordstyle=\color[rgb]{0.627,0.126,0.941},
+    commentstyle=\color[rgb]{0.133,0.545,0.133},
+    stringstyle=\color[rgb]{01,0,0},
+    numbers=left,
+    numberstyle=\small,
+    stepnumber=1,
+    numbersep=10pt,
+    captionpos=t,
+    escapeinside={\%*}{*)}
+}
+
+%%%----------%%%----------%%%----------%%%----------%%%
+
+
+\begin{document}
+
+\maketitle
+
+\section*{Questão 2}
+
+\begin{align*}
+     \int_{-5}^{5} x sen(x)dx &= \left[-x cos(x) - \int -cos(x)dx\right]_{-5}^{5} \qquad\text{[por partes com u:=x e dv:=sen(x)]}\\
+    &= \left[-x cos(x) + sen(x)\right]_{-5}^{5}\\
+    & = -5cos(5)+sen(5)-(5cos(-5)+sen(-5)) \\
+    & = -5cos(5)+sen(5)-5cos(-5)-sen(-5)) \qquad\text{[cos é par e sen é ímpar]}\\
+    & = 2sen(5)-10cos(x) \\
+    & = -4.75447040\dots \\
+\end{align*}
+
+\section*{Questão 3}
+
+Entendo primeiro o que foi feito na implementação solicitada na questão 1. As regras compostas do trapezio, 1/3 de Simpson e 3/8 de Simpson, foram implementadas partindo das fórmulas das regras com apenas um intervalo, em que cada regra se aproxima do valor da integral. Para se aproximar ainda mais da solução verdadeira da integral, dividimos o intervalo original em várias partes e somamos o valor dado por uma regra em cada intervalo. Temos as seguintes regras compostas:
+
+\medskip
+\noindent
+\scalebox{0.8}{$\int_{a}^{b} f(x)dx = \frac{h}{2}(y_0 + 2y_1 + 2y_2 + \dots + 2y_{n-1} + y_n) \qquad \text{n intervalos}$}
+
+\medskip
+\noindent
+\scalebox{0.8}{$\int_{a}^{b} f(x)dx = \frac{h}{3}(y_0 + 4y_1 + 2y_2 + 4y_3 + 2y_4 \dots + 2y_{n-2} + 4y_{n-1} + y_n) \qquad \text{n subintervalos}$}
+
+\medskip
+\noindent
+\scalebox{0.8}{$\int_{a}^{b} f(x)dx = \frac{h}{3}(y_0 + 3y_1 + 3y_2 + 2y_3 + 3y_4 + 3y_5 + 2y_6 \dots + 2y_{n-3} + 3y_{n-2} + 3y_{n-1} + y_n) \qquad \text{n subintervalos}$}
+
+\medskip
+que são as regras do trapézio, 1/3 de Simpson e 3/8 de Simpson, respectivamente. Note que há um padrão nas parcelas de cada soma, esses padrões foram utilizados para implementar a regras de forma simples.
+
+Abaixo, observamos que para 7 pontos a regra 3/8 de Simpson foi a que menos se aproximou do valor real para a integral dada na questão 1, mas conforme aumentamos a quantidade de pontos, as regras 1/3 de Simpson e 3/8 de Simpson se aproximam mais rápido do valor verdadeiro.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=.7\textwidth]{comparacao.png}
+    \caption{Resultados das regras para a mesma quantidade de pontos}
+    \label{fig:fig1}
+\end{figure}
+
+\section*{Questão 4}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.7\textwidth, angle=-90]{trapezioo.eps}
+    \caption{Regra composta do trapézio com 6 intervalos}
+    \label{fig:fig2}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=1\textwidth]{simpson13.eps}
+    \caption{Regra composta 1/3 de Simpson com 3 intervalos}
+    \label{fig:fig3}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.7\textwidth, angle=-90]{simpson38.eps}
+    \caption{Regra composta 3/8 de Simpson com 2 intervalos}
+    \label{fig:fig4}
+\end{figure}
+
+ \newpage
+
+\section*{Questão 5}
+
+Usarei a regra do trapézio para calcular todas as integrais a seguir, pois nesse caso a integral será exata usando a regra do trapézio.
+
+\begin{align}
+    \int_{0}^{c}v(t)dt &= \frac{c(v + 2v)}{2} \nonumber\\
+    &= \frac{3vc}{2} \label{eq:eq1}
+\end{align}
+
+\begin{align}
+    &\int_{0}^{t}v(t)dt = \frac{3vc}{4} \nonumber\\
+    \implies & \frac{t(v(0)+v(t))}{2} = \frac{3vc}{4} \nonumber\\
+    \implies & \frac{tv+tv(t)}{2} = \frac{3vc}{4} \nonumber\\
+    \implies & tv+tv(t) = \frac{3vc}{2} \nonumber\\
+    \implies & v(t) = \frac{3vc-2tv}{2t} \label{eq:eq2}
+\end{align}
+
+\begin{align}
+    &\int_{0}^{t}v(t)dt = \int_{t}^{c}v(t)dt \nonumber\\
+    \implies & \frac{t(v(0)+v(t))}{2} = \frac{(c-t)(v(c)+v(t))}{2} \nonumber\\
+    \implies & t(v+v(t)) = (c-t)(2v+v(t)) \nonumber\\
+    \implies & tv+tv(t) = 2vc+v(t)c-2tv-tv(t) \nonumber\\
+    \implies & 3tv+2tv(t) = 2vc+v(t)c \nonumber\\
+    \implies & 3tv+3vc-2tv = 2vc \cdot \frac{3vc^2-2tvc}{2t} \qquad \text{pela equação (2)} \nonumber\\
+    \implies & tv = -vc \cdot \frac{3vc^2-2tvc}{2t} \nonumber\\
+    \implies & tv = \frac{-2tvc+3vc^2-2tvc}{2t} \nonumber\\
+    \implies & 2vt^2 = -4tvc+3vc^2 \nonumber\\
+    \implies & 2vt^2+4tvc-3vc^2 = 0 \nonumber\\
+    \implies & 2t^2+4tc-3c^2 = 0 \nonumber\\
+    \implies & t = \frac{-4c \pm \sqrt{16c²-4\cdot 2(-3c^2)}}{4} \nonumber\\
+    \implies & t = \frac{-4c \pm \sqrt{40c^2}}{4} \nonumber\\
+    \implies & t = \frac{-4c + \sqrt{40c^2}}{4} \qquad \text{t é positivo pelo contexto.} \label{eq:eq2}
+\end{align}
+
+\end{document}
+
+

@@ -1,0 +1,167 @@
+\documentclass[a4paper, 12pt]{article}
+\usepackage[utf8]{inputenc}
+
+\title{Tarefa 3}
+\author{Kaio Henrique de Sousa}
+\date{\today}
+
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{amsmath}
+\usepackage{appendix}
+\usepackage[english, brazil]{babel}
+\usepackage{listings}
+\graphicspath{{images/}}
+
+\lstset{
+    language=Python,
+    basicstyle=\ttfamily\small,
+    aboveskip={1.0\baselineskip},
+    belowskip={1.0\baselineskip},
+    columns=fixed,
+    extendedchars=true,
+    breaklines=true,
+    tabsize=4,
+    prebreak=\raisebox{0ex}[0ex][0ex]{\ensuremath{\hookleftarrow}},
+    frame=lines,
+    showtabs=false,
+    showspaces=false,
+    showstringspaces=false,
+    keywordstyle=\color[rgb]{0.627,0.126,0.941},
+    commentstyle=\color[rgb]{0.133,0.545,0.133},
+    stringstyle=\color[rgb]{01,0,0},
+    numbers=left,
+    numberstyle=\small,
+    stepnumber=1,
+    numbersep=10pt,
+    captionpos=t,
+    escapeinside={\%*}{*)}
+}
+
+%%%----------%%%----------%%%----------%%%----------%%%
+
+
+\begin{document}
+
+\maketitle
+
+\section*{Método da eliminação de Gauss}
+Em um sistema linear do tipo triangular inferior, por exemplo para o sistema
+
+$\begin{cases}
+3x_0 + 4x_1 - 2x_2 = 4\\
+2x_1 + 3x_2 = 11\\
+2x_3 = -16
+\end{cases}$
+
+\noindent
+temos a seguinte matriz aumentada,
+
+\[ \left[
+\medskip
+\begin{array}{ccc|c}
+3 & 4 & -2 & 4\\
+0 & 2 & 3 & 11\\
+0 & 0 & 2 & -16
+\end{array}
+\right] \].
+
+\medskip
+Sistemas como esse podem ser resolvido por \textit{retrosubstituição} porém, nem sempre iremos nos deparar com sistemas triangulares, mas é possível tornar um sistema qualquer em um triangular e esse é o objetivo da eliminação de Gauss.
+
+\medskip
+Para qualquer matriz $A_{nxn}$ da forma,
+
+\[ \left[
+\medskip
+\begin{array}{cccc|c}
+a_{11} & a_{12} & ... & a_{1n} & b_1\\
+a_{21} & a_{22} & ... & a_{2n} & b_2\\
+. & . & . & . & .\\
+. & . & . & . & .\\
+a_{n1} & a_{n2} & ... & a_{nn} & b_n
+\end{array}
+\right] \]
+
+\noindent
+A eliminação de Gauss é feita $n-1$ passos, no primeiro definimos $a_{11}$ como elemento pivô e para cada linha abaixo do pivô fazemos $l_i=l_i-m_il_1$, onde $m_i=\frac{a_{i1}}{a_{11}}$, com $1<i\leq n$. Para o segundo passo definimos $a_{22}$ como elemento pivô e para cada linha abaixo do pivô fazemos $l_i=l_i-m_il_2$, onde $m_i=\frac{a_{i2}}{a_{22}}$, com $2<i\leq n$ e assim em diante, para cada elemento da diagonal.
+
+\medskip
+Utilizando uma implementação da eliminação de Gauss e aplicando em matrizes dadas, ambos em anexo, podemos comparar o norma do vetor resíduo com e sem pivotamento parcial, observe abaixo os resultados de cada matriz.
+
+\medskip
+Note que no arquivo m1.in, as normas dos vetores residuais foram $0$ sem ou com pivotamento parcial, significando que ambos os tipos de pivotamento chegaram à resolução do sistema (vetor x).
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=1\textwidth]{m1.png}
+    \caption{Arquivo m1}
+    \label{fig:fig1}
+\end{figure}
+
+\medskip
+Contudo, nem sempre a eliminação de Gauss com pivotamento parcial irá convergir para o resultado mais rapidamente que a eliminação sem pivotamento parcial, pois o pivotamento parcial apenas diminui os erros causados por valores muitos pequenos.
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=1\textwidth]{m2.png}
+    \caption{Arquivo m2}
+    \label{fig:fig2}
+\end{figure}
+
+\medskip
+Observe que para um sistema maior como o do arquivo m3.in, os resultados para os dois tipos de pivotamento diferem ainda mais que no resultado anterior com um sistema menor. Isso ocorre, pois no pivotamento parcial há várias trocas de linha do sistema linear, acarretando nessa diferença entre os resultados. Note que no primeiro caso, chegamos muito perto do resultado com valor em notação científica.
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=1\textwidth]{m3.png}
+    \caption{Arquivo m3}
+    \label{fig:fig3}
+\end{figure}
+
+\medskip
+Vejamos agora o que acontece ao tentar aplicar o refinamento quando já temos o resultado exato para o nosso sistema m1. Note na Figura \ref{fig:fig4}, que nas iterações de números ímpares o mesmo valores são repetidos. Enquanto, nos números pares temos o valor da norma do vetor residual para um resultado exato do sistema. Esse padrão ocorre para todas iterações quando encontramos o valor exato para o vetor $x$.
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.6\textwidth]{im1.png}
+    \caption{iteração número 100, no sistema m1.}
+    \label{fig:fig4}
+\end{figure}
+
+\medskip
+Lembrando que aplicando a eliminação no arquivo m2.in sem pivotamento parcial obtivemos $1.4432899320127035e-15$ como norma do vetor residual, ou seja, um valor muito próximo de zero. Ao analisar as iterações 116 à 120 na Figura \ref{fig:fig5}, observamos que ocorreu o mesmo nos resultados acima, encontramos um valor solução muito próxima para o sistema. Talvez os erros de precisão, fizeram com que não tenhamos encontrado uma solução exata.
+\begin{figure}[b]
+    \centering
+    \includegraphics[width=0.6\textwidth]{im2.png}
+    \caption{iteração número 100, no sistema m2.}
+    \label{fig:fig5}
+\end{figure}
+
+\medskip
+Testemos agora o que acontece aplicando a eliminação no arquivo m2.in usando pivotamento parcial, resultado mostrado na Figura \ref{fig:fig6}. Nesse caso, o valor da norma do vetor residual cresceu muito até a iteração de número 31, mas depois diminui drasticamente sem convergir em um valor único.
+\begin{figure}[b]
+    \centering
+    \includegraphics[width=0.6\textwidth]{im2p.png}
+    \caption{iteração número 34, com pivotamento parcial no m2.}
+    \label{fig:fig6}
+\end{figure}
+
+\medskip
+Testando agora para um sistema maior o m3.in, sem utilizar o pivotamento parcial o valor da norma do vetor resíduo convergiu para um resultado mais rapidamente na Figura \ref{fig:fig7}.
+\begin{figure}[b]
+    \centering
+    \includegraphics[width=0.6\textwidth]{im3.png}
+    \caption{iteração número 10, no m3.}
+    \label{fig:fig7}
+\end{figure}
+
+\medskip
+Já para o mesmo sistema usando pivotamento parcial, mostrado na Figura \ref{fig:fig8}. Ocorreu algo muito parecido com a Figura \ref{fig:fig6}.
+\begin{figure}[b]
+    \centering
+    \includegraphics[width=0.6\textwidth]{im3p.png}
+    \caption{iteração número 20, com pivotamento parcial no m3.}
+    \label{fig:fig8}
+\end{figure}
+
+
+\end{document}
+
+

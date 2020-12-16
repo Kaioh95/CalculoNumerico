@@ -1,0 +1,171 @@
+\documentclass[a4paper, 12pt]{article}
+
+%\usepackage[T1]{fontec}
+%\usepackage[utf8]{inputenc}
+%\usepackage{grapichx}
+%\usepackage{amsmath}
+%\usepackage{xcolor}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{appendix}
+\graphicspath{{images/}}
+\usepackage{xcolor}
+
+% code listing settings
+\usepackage{listings}
+\lstset{
+    language=Python,
+    basicstyle=\ttfamily\small,
+    aboveskip={1.0\baselineskip},
+    belowskip={1.0\baselineskip},
+    columns=fixed,
+    extendedchars=true,
+    breaklines=true,
+    tabsize=4,
+    prebreak=\raisebox{0ex}[0ex][0ex]{\ensuremath{\hookleftarrow}},
+    frame=lines,
+    showtabs=false,
+    showspaces=false,
+    showstringspaces=false,
+    keywordstyle=\color[rgb]{0.627,0.126,0.941},
+    commentstyle=\color[rgb]{0.133,0.545,0.133},
+    stringstyle=\color[rgb]{01,0,0},
+    numbers=left,
+    numberstyle=\small,
+    stepnumber=1,
+    numbersep=10pt,
+    captionpos=t,
+    escapeinside={\%*}{*)}
+}
+
+%%%----------%%%----------%%%----------%%%----------%%%
+\title{Tarefa 1}
+\author{Kaio Henrique de Sousa}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section*{Primeira Questão}
+
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=1\textwidth]{imagem.eps}
+	\caption{Plot da f(x) e os quatro pontos pedidos}
+	\label{fig:fig1}
+\end{figure}
+
+\section*{Segunda Questão}
+
+Primeiramente, foi utilizado a seguinte definição de derivada
+\begin{equation}
+	f'(x) = \lim_{x\rightarrow a}\frac{f(x)-f(a)}{x-a}
+\end{equation}
+
+depois, ao ignorar o limite e isolar f(a) teremos a seguinte equação
+\begin{equation}
+	f(a) = f(x) - f'(a)*(x-a)
+\end{equation}
+
+Agora, para cada ponto que vai ser calculado precisamos de um ponto x próximo ao a. Como o único ponto conhecido é o ponto $f(0) = 0$, iremos estimar cada ponto no interalo $[-6:6]$ a partir dele, que é exatamente o que ocorre no código do apêndice A, após os calculos é gerado um arquivos com os pontos da função no intervalo dado. Finalmente, temos o seguinte gráfico.
+
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=1\textwidth]{aprox.png}
+	\caption{Gráfico da aproximação}
+	\label{fig:fig2}
+\end{figure}
+
+Já na série de Taylor a seguir
+\begin{equation}
+    f(x) = \sum_0^n \frac{f^n(a)}{n!}(x-a)^n
+\end{equation}
+Como mostra no Apêndice B, foi definido a função fatorial e usando operador ternário foi definida a derivada $f^{(n)}(x)$ para n ímpar ou par. Depois, foi definido a série segundo a equação (3), gerando o seguinte gráfico.
+
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=1\textwidth]{sTaylor.eps}
+	\caption{Série de Taylor com n=100}
+	\label{fig:fig3}
+\end{figure}
+
+\section*{Apêndice A}
+
+\begin{lstlisting}[label={list:first},caption = Código em Python que estima a função desconhecida]
+import math
+
+def hf(x):
+	return math.cos(x)-x*math.sin(x)
+
+def f(x, y, a):
+	return y-hf(a)*(x-a)
+
+alpha = 0
+beta = 0
+
+arquivo = open("arquivo.pts", 'w')
+
+x_anterior = 0
+y_anterior = 1
+pontos_negativos = []
+
+#Calculo dos pontos no intervalo [-6:0] a partir do ponto ponto (0, f(x)).
+while(beta >= -6):
+	x_anterior = beta+0.1
+
+	if(beta == 0):
+		print("PONTO CONHECIDO")
+		pontos_negativos.append(str(beta)+ " " + str(f(0, 1, beta)) + "\n")
+		y_anterior = f(0, 1, beta)
+	else:
+		pontos_negativos.append(str(beta) + " " + str(f(x_anterior, y_anterior, beta)) + "\n") 
+		y_anterior = f(x_anterior, y_anterior, beta)
+
+	beta -= 0.1
+
+#Escrita em ordem crescente
+for i in reversed(pontos_negativos):
+	arquivo.write(i)
+
+x_anterior = 0
+y_anterior = 1
+
+#Calculo dos pontos no intervalo [0:6] a partir do ponto ponto (0, f(x)).
+while(alpha <= 6):
+	x_anterior = alpha-0.1
+
+	if(alpha == 0):
+		print("PONTO CONHECIDO")
+		y_anterior = f(0, 1, alpha)
+	else:
+		arquivo.write(str(alpha) + " " + str(f(x_anterior, y_anterior, alpha)) + "\n")
+		y_anterior = f(x_anterior, y_anterior, alpha)
+
+	alpha += 0.1
+
+arquivo.close()
+\end{lstlisting}
+
+\section*{Apêndice B}
+
+\begin{lstlisting}[label={list:first},caption = Script que gera o gráfico da série de Taylor]
+set xrange[-10:10]
+set yrange[-10:10]
+set xtics 1
+set ytics 1
+set samples 1000
+set style fill pattern 5
+set xzeroaxis
+set yzeroaxis
+set grid
+
+fac(n) = (n==0) ? 1 : n*fac(n-1)
+
+hf(x, i) = (i%2 != 0) ? (-1)**((i-1)/2)*i*cos(x) + (-1)**((i+1)/2)*x*sin(x) : (-1)**(i/2)*i*sin(x) + (-1)**(i/2)*x*cos(x)
+
+f(x) = sum [i=0:100] hf(0, i)*(x**i)/fac(i)
+plot f(x) title "f(x)", x*cos(x)+1 lw 2 lc 0
+\end{lstlisting}
+
+\end{document}
